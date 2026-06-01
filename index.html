@@ -640,8 +640,8 @@ function renderMenu(){
         ?`<button class="add-btn" onclick="event.stopPropagation();openSheet('${k}')">ADD</button>`
         :`<div class="qty-ctrl"><button onclick="event.stopPropagation();quickRemove('${k}')">−</button><span>${qty}</span><button onclick="event.stopPropagation();openSheet('${k}')">+</button></div>`;
       const typeIcon=item.type==='veg'?'<div class="veg-icon" style="display:inline-flex;"></div>':'<div class="nonveg-icon" style="display:inline-flex;"></div>';
-      const arButtonMarkup = item.folder 
-  ? `<button class="ar-btn" onclick="...">${SVG_CUBE} View AR</button>`'';
+      const arButtonMarkup=item.folder
+        ?`<button class="ar-btn" onclick="event.stopPropagation();openArModal('${k}')">${SVG_CUBE} View AR</button>`:'';
       html+=`<div class="menu-item" onclick="openSheet('${k}')">
         <div class="item-left">
           <div class="item-type-badge">${typeIcon}</div>

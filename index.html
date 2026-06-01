@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0"/>
+<title>Chef Nishanth — Church Street</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --org:#FC8019;--org-light:#FFF3E0;--dark:#282C3F;--bg:#F8F9FA;
+  --card:#FFFFFF;--text:#282C3F;--muted:#686B78;--border:#E9E9EB;
+  --red:#E23744;--green:#60B246;--green2:#48C479;--yellow:#f5a623;
+  --shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+body{font-family:'Poppins',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto;position:relative;}
+
+/* Enhanced Header Stability */
+.header{background:#fff;position:sticky;top:0;z-index:100;box-shadow:0 2px 10px rgba(0,0,0,0.03);height:60px;}
+.header-main{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;}
+.back-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.back-btn svg{width:20px;height:20px;}
+.header-info{flex:1;padding:0 12px;min-width:0;}
+.header-name{font-size:15px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.header-loc{font-size:11px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.header-actions{display:flex;gap:10px;align-items:center;}
+.search-icon-btn{width:34px;height:34px;border:1px solid #e9e9eb;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:#fff;}
+.cart-pill{background:var(--green);color:#fff;border:none;border-radius:20px;padding:6px 14px;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 2px 6px rgba(96,178,70,0.3);}
+
+/* Immersive Hero Design */
+.hero-banner{background:linear-gradient(180deg,#1C1C1C 0%,#282C3F 100%);position:relative;overflow:hidden;}
+.hero-img-row{display:flex;justify-content:center;padding:24px 0 12px;}
+.hero-emoji-big{font-size:72px;line-height:1;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.3));}
+.hero-dark-overlay{background:linear-gradient(transparent,rgba(28,28,28,0.98));padding:20px 16px 16px;}
+.restaurant-name-big{font-size:24px;font-weight:700;color:#fff;margin-bottom:4px;letter-spacing:-0.3px;}
+.restaurant-cuisine{font-size:12px;color:rgba(255,255,255,0.65);margin-bottom:12px;}
+.rating-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.rating-badge{background:var(--green);color:#fff;border-radius:6px;padding:3px 8px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:3px;}
+.dot-sep{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.3);}
+.hero-stat{font-size:12px;color:rgba(255,255,255,0.75);font-weight:500;}
+
+/* Promotional Banner Layer */
+.offer-strip{background:#1BA672;padding:10px 16px;display:flex;align-items:center;gap:10px;}
+.offer-strip svg{width:16px;height:16px;color:#fff;flex-shrink:0;}
+.offer-text{font-size:12px;color:#fff;font-weight:500;letter-spacing:0.2px;}
+
+/* Segmented Action/Info Layer */
+.info-row{background:#fff;padding:14px 16px;display:flex;gap:10px;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border);}
+.info-row::-webkit-scrollbar{display:none;}
+.info-pill{border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:12px;font-weight:500;color:var(--muted);white-space:nowrap;display:flex;align-items:center;gap:6px;background:var(--bg);}
+
+/* Feature Controls Slider */
+.feature-scroll{padding:14px 0 14px 16px;overflow-x:auto;scrollbar-width:none;display:flex;gap:12px;background:#fff;border-bottom:8px solid var(--bg);}
+.feature-scroll::-webkit-scrollbar{display:none;}
+.feat-card{min-width:145px;background:var(--org-light);border-radius:14px;padding:14px;cursor:pointer;border:1px solid #FFD0A0;flex-shrink:0;transition:transform .15s,box-shadow .15s;}
+.feat-card:active{transform:scale(0.96);box-shadow:none;}
+.feat-icon{font-size:24px;margin-bottom:6px;}
+.feat-title{font-size:12px;font-weight:700;color:var(--org);line-height:1.3;margin-bottom:2px;}
+.feat-sub{font-size:10px;color:var(--muted);line-height:1.3;}
+.feat-card.green{background:#E8F8EE;border-color:#A8E0BF;} .feat-card.green .feat-title{color:#1A7A4A;}
+.feat-card.blue{background:#E8F1FF;border-color:#A8C4F0;} .feat-card.blue .feat-title{color:#1A4DAA;}
+.feat-card.purple{background:#F0EAFF;border-color:#C8B0F0;} .feat-card.purple .feat-title{color:#6B2FBF;}
+
+/* Filtering Elements */
+.search-bar{margin:16px 16px 12px;background:#fff;border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;gap:10px;padding:12px 14px;box-shadow:inset 0 1px 3px rgba(0,0,0,0.02);}
+.search-bar svg{width:18px;height:18px;color:var(--muted);flex-shrink:0;}
+.search-bar input{border:none;outline:none;font-family:'Poppins',sans-serif;font-size:13px;color:var(--text);background:transparent;flex:1;}
+.veg-toggle-row{padding:12px 16px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;}
+.veg-toggle-label{font-size:13px;font-weight:500;color:var(--muted);}
+.toggle-switch{width:42px;height:24px;border-radius:12px;background:#E2E8F0;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0;}
+.toggle-switch.on{background:var(--green);}
+.toggle-switch::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:3px;left:3px;transition:left .2s;box-shadow:0 2px 4px rgba(0,0,0,0.15);}
+.toggle-switch.on::after{left:21px;}
+
+.cat-filter{padding:4px 16px 16px;overflow-x:auto;scrollbar-width:none;display:flex;gap:8px;background:#fff;}
+.cat-filter::-webkit-scrollbar{display:none;}
+.cat-chip{border:1px solid var(--border);border-radius:20px;padding:6px 16px;font-size:12px;font-weight:500;background:#fff;color:var(--muted);cursor:pointer;white-space:nowrap;transition:all .2s;}
+.cat-chip.active{background:var(--dark);border-color:var(--dark);color:#fff;}
+
+/* Layout Resilient Menu System */
+.menu-section{background:#fff;margin-bottom:8px;border-bottom:1px solid var(--border);}
+.section-header{padding:16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;}
+.section-title{font-size:16px;font-weight:700;color:var(--text);letter-spacing:-0.2px;}
+.section-count{font-size:12px;color:var(--muted);margin-top:2px;}
+.section-arrow{font-size:16px;color:var(--muted);transition:transform .2s;font-weight:600;}
+.section-arrow.open{transform:rotate(180deg);}
+.section-body{padding:0 16px;}
+
+.menu-item{padding:18px 0;border-bottom:1px solid #F5F5F5;display:flex;align-items:flex-start;gap:16px;position:relative;}
+.menu-item:last-child{border-bottom:none;}
+.item-left{flex:1;min-width:0;}
+.item-type-badge{margin-bottom:6px;display:flex;}
+.veg-icon, .nonveg-icon{width:14px;height:14px;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.veg-icon{border:1.5px solid var(--green);} .veg-icon::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);}
+.nonveg-icon{border:1.5px solid var(--red);} .nonveg-icon::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);}
+
+.item-name{font-size:15px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:4px;word-break:break-word;}
+.bestseller-tag{display:inline-flex;align-items:center;gap:3px;background:#FFF8E1;border:1px solid #FFD54F;color:#F57F17;font-size:10px;font-weight:600;padding:2px 6px;border-radius:4px;margin-left:6px;vertical-align:middle;}
+.item-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;word-break:break-word;}
+.item-price-row{display:flex;align-items:center;gap:10px;}
+.item-price{font-size:15px;font-weight:700;color:var(--text);}
+.liked-tag{font-size:11px;color:var(--green);font-weight:600;}
+
+/* Image Frame & Action Layer Balance */
+.item-right{flex-shrink:0;width:96px;display:flex;flex-direction:column;align-items:center;gap:8px;}
+.item-img{width:96px;height:96px;border-radius:14px;background:linear-gradient(135deg,#FFF3CD,#FFE082);display:flex;align-items:center;justify-content:center;font-size:36px;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:relative;user-select:none;}
+.add-btn{background:#fff;border:1.5px solid var(--green);color:var(--green);border-radius:8px;padding:6px 22px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;box-shadow:0 3px 8px rgba(0,0,0,0.06);white-space:nowrap;letter-spacing:0.5px;}
+.add-btn:hover{background:var(--green);color:#fff;}
+.qty-ctrl{display:flex;align-items:center;background:var(--green);border-radius:8px;overflow:hidden;box-shadow:0 3px 8px rgba(96,178,70,0.2);width:84px;justify-content:space-between;}
+.qty-ctrl button{background:transparent;border:none;color:#fff;font-size:16px;font-weight:700;width:28px;height:30px;cursor:pointer;}
+.qty-ctrl span{color:#fff;font-size:13px;font-weight:700;}
+.ar-btn{border:1px solid #E2E8F0;background:#fff;color:var(--text);border-radius:6px;padding:5px 8px;font-family:'Poppins',sans-serif;font-size:10px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:4px;box-shadow:0 1px 4px rgba(0,0,0,0.04);white-space:nowrap;width:100%;justify-content:center;}
+.ar-btn svg{width:12px;height:12px;color:var(--org);}
+
+/* Modern Shimmer Skeleton Component */
+.skeleton-container{padding:16px;background:#fff;}
+.skeleton-card{display:flex;justify-content:between;gap:16px;padding:16px 0;border-bottom:1px solid #f5f5f5;}
+.skeleton-left{flex:1;}
+.skeleton-line{background:linear-gradient(90deg,#f0f0f0 25%,#e4e4e4 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;border-radius:4px;margin-bottom:8px;}
+.skeleton-title{height:16px;width:60%;}
+.skeleton-desc{height:12px;width:90%;margin-bottom:4px;}
+.skeleton-desc-short{height:12px;width:40%;}
+.skeleton-right{width:96px;height:96px;border-radius:14px;background:linear-gradient(90deg,#f0f0f0 25%,#e4e4e4 50%,#f0f0f0 75%);background-size:200% 100%;animation:shimmer 1.4s infinite;}
+@keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+/* Bottom Overlays & Panels */
+.cart-footer{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:12px 16px 20px;z-index:99;display:none;background:linear-gradient(transparent, rgba(0,0,0,0.02));}
+.cart-footer.show{display:block;}
+.cart-btn-full{background:var(--org);color:#fff;border:none;border-radius:14px;padding:14px 20px;width:100%;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;box-shadow:0 6px 20px rgba(252,128,25,0.45);}
+.cart-btn-left{display:flex;flex-direction:column;align-items:flex-start;}
+.cart-count-label{font-size:11px;font-weight:400;opacity:0.9;}
+.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%) translateY(10px);background:#282C3F;color:#fff;padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;opacity:0;transition:all .25s;z-index:600;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,0.15);}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-main">
+    <div class="back-btn">
+      <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </div>
+    <div class="header-info">
+      <div class="header-name">Chef Nishanth</div>
+      <div class="header-loc">Church Street, MG Road, Bangalore</div>
+    </div>
+    <div class="header-actions">
+      <div class="search-icon-btn" onclick="focusSearch()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <button class="cart-pill" onclick="openTableModal()" id="headerCartBtn" style="display:none;">
+        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <span id="headerCartCount">0</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="hero-banner">
+  <div class="hero-img-row"><div class="hero-emoji-big">🍽️</div></div>
+  <div class="hero-dark-overlay">
+    <div class="restaurant-name-big">Chef Nishanth's Kitchen</div>
+    <div class="restaurant-cuisine">North Indian • Mughlai • Biryani • Coastal</div>
+    <div class="rating-row">
+      <div class="rating-badge">⭐ 4.7</div>
+      <div class="dot-sep"></div>
+      <span class="hero-stat">25–35 mins</span>
+      <div class="dot-sep"></div>
+      <span class="hero-stat">₹400 for two</span>
+      <div class="dot-sep"></div>
+      <span class="hero-stat">386 ratings</span>
+    </div>
+  </div>
+</div>
+
+<div class="offer-strip">
+  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+  <div class="offer-text">🎉 Use WELCOME50 — 50% off up to ₹100 on your first order</div>
+</div>
+
+<div class="info-row">
+  <div class="info-pill"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>11am–11pm, Open Now</div>
+  <div class="info-pill">🛡 FSSAI Certified</div>
+  <div class="info-pill">🌿 Veg &amp; Non-Veg</div>
+  <div class="info-pill" onclick="openSplitBill()" style="cursor:pointer;color:var(--org);border-color:var(--org);background:var(--org-light);">✂️ Split Bill</div>
+  <div class="info-pill" onclick="openCallWaiter()" style="cursor:pointer;color:var(--green);border-color:var(--green);background:#E8F8EE;">🛎️ Call Waiter</div>
+</div>
+
+<div class="feature-scroll">
+  <div class="feat-card" onclick="openAIRecommend()">
+    <div class="feat-icon">🤖</div>
+    <div class="feat-title">AI Meal Pick</div>
+    <div class="feat-sub">Get personalised suggestions</div>
+  </div>
+  <div class="feat-card green" onclick="openGroupOrder()">
+    <div class="feat-icon">👥</div>
+    <div class="feat-title">Group Order</div>
+    <div class="feat-sub">Share cart with friends</div>
+  </div>
+  <div class="feat-card blue" onclick="openReorder()">
+    <div class="feat-icon">🔁</div>
+    <div class="feat-title">Reorder</div>
+    <div class="feat-sub">Repeat your last visit</div>
+  </div>
+  <div class="feat-card purple" onclick="showToast('📸 Visual search coming soon!')">
+    <div class="feat-icon">📷</div>
+    <div class="feat-title">Snap &amp; Find</div>
+    <div class="feat-sub">Find a dish by photo</div>
+  </div>
+</div>
+
+<div class="search-bar">
+  <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <input type="text" placeholder="Search dishes, cuisines..." id="searchInput" oninput="filterMenu()"/>
+</div>
+
+<div class="veg-toggle-row">
+  <span class="veg-toggle-label">Veg only</span>
+  <div class="toggle-switch" id="vegToggle" onclick="toggleVeg()"></div>
+</div>
+
+<div class="cat-filter" id="catFilter">
+  <div class="cat-chip active" onclick="filterCat('all',this)">All</div>
+  <div class="cat-chip" onclick="filterCat('starters',this)">Starters</div>
+  <div class="cat-chip" onclick="filterCat('mains',this)">Mains</div>
+  <div class="cat-chip" onclick="filterCat('biryani',this)">Biryani</div>
+</div>
+
+<div id="menuContainer"></div>
+
+<div class="cart-footer" id="cartFooter">
+  <button class="cart-btn-full" onclick="openTableModal()">
+    <div class="cart-btn-left">
+      <span class="cart-count-label" id="cartCountLabel">0 items</span>
+      <span class="cart-total-label">₹<span id="cartTotal">0</span></span>
+    </div>
+    <div class="cart-btn-right">View Cart <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEET_API_URL = 'https://script.google.com/macros/s/AKfycbwxYg6FWWLmwIh03jYatUUjGoCHuUJ3ztjhWOKdExuxzHxL_l3s2F6HJ5RdakEa2wIO/exec';
+let menuData = [];
+const cart = {};
+let curCat = 'all', search = '', vegOnly = false;
+
+// Functional structural layout parity placeholder
+function generateSkeletons() {
+  let html = '<div class="skeleton-container">';
+  for (let i = 0; i < 3; i++) {
+    html += `
+      <div class="skeleton-card">
+        <div class="skeleton-left">
+          <div class="skeleton-line skeleton-title"></div>
+          <div class="skeleton-line skeleton-desc"></div>
+          <div class="skeleton-line skeleton-desc-short"></div>
+        </div>
+        <div class="skeleton-right"></div>
+      </div>`;
+  }
+  html += '</div>';
+  return html;
+}
+
+async function loadMenu() {
+  const container = document.getElementById('menuContainer');
+  container.innerHTML = generateSkeletons();
+  try {
+    const res = await fetch(SHEET_API_URL);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    menuData = await res.json();
+    renderMenu();
+  } catch (err) {
+    container.innerHTML = `<div style="text-align:center;padding:40px 20px;font-size:13px;color:var(--red);">Failed to connect. Please reload.</div>`;
+  }
+}
+
+function ek(n){return n.replace(/[^a-zA-Z0-9]/g,'_');}
+
+function renderMenu(){
+  const container = document.getElementById('menuContainer');
+  const items = menuData.filter(item => {
+    if(curCat !== 'all' && item.cat !== curCat) return false;
+    if(vegOnly && item.type !== 'veg') return false;
+    if(search && !item.name.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  if(!items.length) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:13px;">No options found.</div>';
+    return;
+  }
+
+  let html = '<div class="menu-section"><div class="section-body">';
+  items.forEach(item => {
+    const k = ek(item.name);
+    const qty = cart[item.name]?.qty || 0;
+    const actionBtn = qty === 0 
+      ? `<button class="add-btn" onclick="quickAdd('${item.name}', ${item.price})">ADD</button>`
+      : `<div class="qty-ctrl"><button onclick="adjustQty('${item.name}', -1)">-</button><span>${qty}</span><button onclick="adjustQty('${item.name}', 1)">+</button></div>`;
+
+    html += `
+      <div class="menu-item">
+        <div class="item-left">
+          <div class="item-type-badge"><div class="${item.type}-icon"></div></div>
+          <div class="item-name">${item.name}</div>
+          <div class="item-desc">${item.desc || 'Freshly cooked premium house selection.'}</div>
+          <div class="item-price-row">
+            <div class="item-price">₹${item.price}</div>
+          </div>
+        </div>
+        <div class="item-right">
+          <div class="item-img">${item.emoji || '🍛'}</div>
+          ${actionBtn}
+        </div>
+      </div>`;
+  });
+  html += '</div></div>';
+  container.innerHTML = html;
+}
+
+function quickAdd(name, price) {
+  cart[name] = { qty: 1, price: price };
+  updateCart();
+  renderMenu();
+}
+
+function adjustQty(name, change) {
+  if (!cart[name]) return;
+  cart[name].qty += change;
+  if (cart[name].qty <= 0) delete cart[name];
+  updateCart();
+  renderMenu();
+}
+
+function updateCart() {
+  const keys = Object.keys(cart);
+  const totalItems = keys.reduce((acc, k) => acc + cart[k].qty, 0);
+  const totalPrice = keys.reduce((acc, k) => acc + (cart[k].qty * cart[k].price), 0);
+
+  document.getElementById('headerCartCount').textContent = totalItems;
+  document.getElementById('cartCountLabel').textContent = `${totalItems} item${totalItems !== 1 ? 's' : ''}`;
+  document.getElementById('cartTotal').textContent = totalPrice;
+
+  const footer = document.getElementById('cartFooter');
+  const headerBtn = document.getElementById('headerCartBtn');
+  if (totalItems > 0) {
+    footer.classList.add('show');
+    headerBtn.style.display = 'flex';
+  } else {
+    footer.classList.remove('show');
+    headerBtn.style.display = 'none';
+  }
+}
+
+function filterCat(cat, el) {
+  curCat = cat;
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderMenu();
+}
+
+function filterMenu() {
+  search = document.getElementById('searchInput').value.toLowerCase().trim();
+  renderMenu();
+}
+
+function toggleVeg() {
+  vegOnly = !vegOnly;
+  document.getElementById('vegToggle').classList.toggle('on', vegOnly);
+  renderMenu();
+}
+
+function focusSearch() { document.getElementById('searchInput').focus(); }
+
+let toastT;
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+loadMenu();
+</script>
+</body>
+</html>

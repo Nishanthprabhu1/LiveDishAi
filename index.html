@@ -600,7 +600,7 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
   for(let i = 0; i < 18; i++){
     sparks.push({
       x: Math.random(), y: Math.random() * 1.2,
-      vy: -(0.00012 + Math.random() * 0.00010),
+      vy: 0,
       vx: (Math.random()-0.5)*0.00006,
       r: 4 + Math.random() * 5,
       alpha: 0.06 + Math.random() * 0.08,
@@ -640,7 +640,7 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
     sparks.forEach(s => {
       s.y += s.vy;
       s.x += s.vx + Math.sin(t * s.waveSpeed * 0.02 + s.phase) * 0.0003;
-      if(s.y < -0.05){ s.y = 1.1; s.x = Math.random(); }
+
       ctx.beginPath();
       ctx.arc(s.x * W, s.y * H, s.r, 0, Math.PI*2);
       ctx.fillStyle = `rgba(255,120,50,${s.alpha})`;

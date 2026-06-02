@@ -1371,7 +1371,7 @@ function printBill(){
 /* Check URL on load for joiner flow */
 checkJoinerUrl();
 
-loadMenu();
+fetchMenu();
 document.addEventListener('contextmenu',e=>e.preventDefault());
 document.onkeydown=e=>{if(e.keyCode===123)return false;if(e.ctrlKey&&e.shiftKey&&[73,74,67,75].includes(e.keyCode))return false;if(e.ctrlKey&&e.keyCode===85)return false;};
 </script>

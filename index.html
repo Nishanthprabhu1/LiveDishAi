@@ -45,135 +45,86 @@ h1,h2,.display{font-family:'Cormorant Garamond',serif;}
 .cart-pill{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#0A0800;border:none;border-radius:20px;padding:7px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;cursor:pointer;display:none;align-items:center;gap:5px;box-shadow:0 0 16px var(--gold-glow);transition:transform .15s;}
 .cart-pill:active{transform:scale(0.94);}
 
-/* ======= HERO ======= */
-  
-
+/* ======= AURORA BACKGROUND ======= */
 .sk-card{
   height:140px;
-
   border-radius:22px;
-
   margin-bottom:16px;
-
   background:
   linear-gradient(
   90deg,
   #f2f2f2 25%,
   #fafafa 50%,
   #f2f2f2 75%);
-
   background-size:200% 100%;
-
   animation:shimmer 1.2s infinite;
 }
 
 @keyframes shimmer{
-  from{
-    background-position:200% 0;
-  }
-  to{
-    background-position:-200% 0;
-  }
+  from{background-position:200% 0;}
+  to{background-position:-200% 0;}
 }
-  .skeleton-wrap{
-  padding:18px;
-}
-  .waiter-fab{
+.skeleton-wrap{padding:18px;}
+.waiter-fab{
   position:fixed;
   right:20px;
   bottom:95px;
-
   width:58px;
   height:58px;
-
   border:none;
   border-radius:50%;
-
   background:#D4AF37;
   color:#111;
-
   font-size:24px;
-
   cursor:pointer;
-
   z-index:300;
-
-  box-shadow:
-  0 8px 25px rgba(212,175,55,.35);
-
+  box-shadow:0 8px 25px rgba(212,175,55,.35);
   transition:.25s;
 }
+.waiter-fab:hover{transform:translateY(-4px);}
 
-.waiter-fab:hover{
-  transform:translateY(-4px);
-}
 /* ===================================
 PREMIUM HERO
 =================================== */
-
 .premium-hero{
     position:relative;
     height:340px;
     overflow:hidden;
 }
-
 .hero-banner{
     width:100%;
     height:100%;
     object-fit:cover;
 }
-
 .hero-overlay{
     position:absolute;
     inset:0;
-
-    background:
-    linear-gradient(
-        rgba(0,0,0,.15),
-        rgba(0,0,0,.75)
-    );
+    background:linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.75));
 }
-
 .hero-content{
     position:absolute;
     left:24px;
     bottom:35px;
-
     color:white;
 }
-
 .hero-badge{
     color:#D4AF37;
-
     font-size:12px;
-
     letter-spacing:2px;
-
     font-weight:600;
 }
-
 .hero-content h1{
     margin-top:8px;
-
     font-size:58px;
-
     line-height:.85;
-
-    font-family:
-    'Cormorant Garamond',
-    serif;
+    font-family:'Cormorant Garamond',serif;
 }
-
 .hero-content p{
     margin-top:14px;
-
     font-size:13px;
-
     color:#e0e0e0;
-
     max-width:240px;
 }
-
 .premium-footer{
   margin-top:40px;
   padding:40px 20px 120px;
@@ -181,55 +132,39 @@ PREMIUM HERO
   background:#fff;
   border-top:1px solid rgba(0,0,0,.08);
 }
-
 .premium-footer h3{
   font-family:'Cormorant Garamond',serif;
   font-size:30px;
   margin-bottom:8px;
 }
-
-.premium-footer p{
-  color:#777;
-  font-size:13px;
-}
+.premium-footer p{color:#777;font-size:13px;}
 
 /* ======= SEARCH ======= */
 .search-wrap{
     margin:-28px 18px 18px;
     position:relative;
     z-index:10;
-
     background:white;
-
     border:none;
     border-radius:999px;
-
     display:flex;
     align-items:center;
-
     gap:12px;
-
     padding:14px 20px;
-
     height:58px;
-
-    box-shadow:
-      0 2px 12px rgba(0,0,0,.04),
-      0 10px 35px rgba(0,0,0,.06);
+    box-shadow:0 2px 12px rgba(0,0,0,.04),0 10px 35px rgba(0,0,0,.06);
 }
+
 /* ======= CAT CHIPS ======= */
 .cat-row{padding:0 18px 14px;overflow-x:auto;scrollbar-width:none;display:flex;gap:7px;}
 .cat-row::-webkit-scrollbar{display:none;}
 .cat-chip{border:1px solid var(--border);border-radius:20px;padding:7px 14px;font-size:11.5px;font-weight:500;background:var(--surface2);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .18s;}
 .cat-chip.active{background:rgba(201,168,76,0.1);border-color:var(--gold);color:var(--gold);font-weight:600;}
-  /* ==========================
+
+/* ==========================
 CHEF PICKS
 ========================== */
-
-.chef-picks{
-  margin:12px 0 24px;
-}
-
+.chef-picks{margin:12px 0 24px;}
 .chef-title{
   font-family:'Cormorant Garamond',serif;
   font-size:32px;
@@ -238,68 +173,46 @@ CHEF PICKS
   color:#111;
   margin-bottom:14px;
 }
-
 .chef-scroll{
   display:flex;
   gap:18px;
   overflow-x:auto;
   padding:0 18px;
 }
-
-.chef-scroll::-webkit-scrollbar{
-  display:none;
-}
-
+.chef-scroll::-webkit-scrollbar{display:none;}
 .chef-card{
   min-width:240px;
   background:#fff;
   border-radius:22px;
   overflow:hidden;
-
-  box-shadow:
-  0 2px 12px rgba(0,0,0,.04),
-  0 10px 35px rgba(0,0,0,.06);
+  box-shadow:0 2px 12px rgba(0,0,0,.04),0 10px 35px rgba(0,0,0,.06);
+  transition:transform .25s ease;
 }
-
+.chef-card:hover{transform:translateY(-4px);}
 .chef-card img{
   width:100%;
   height:160px;
   object-fit:cover;
 }
-
-.chef-info{
-  padding:14px;
-}
-
-.chef-name{
-  font-size:15px;
-  font-weight:700;
-  color:#111;
-}
-
-.chef-price{
-  font-size:14px;
-  color:#666;
-  margin-top:4px;
-}
+.chef-info{padding:14px;}
+.chef-name{font-size:15px;font-weight:700;color:#111;}
+.chef-price{font-size:14px;color:#666;margin-top:4px;}
 
 /* ======= MENU SECTIONS ======= */
 .menu-sec{
   background:transparent;
   margin:20px 14px;
-  border:none;border-top:1px solid var(--border2);border-bottom:1px solid var(--border2);}
+  border:none;
+  border-top:1px solid var(--border2);
+  border-bottom:1px solid var(--border2);
+}
 .sec-hdr{
   padding:0 4px 14px;
   display:flex;
   justify-content:space-between;
   align-items:center;
 }
-.sec-title{
-  font-size:30px;
-  font-family:'Cormorant Garamond',serif;
-  font-weight:700;
-  color:#111;
-}
+.sec-title{font-size:30px;font-family:'Cormorant Garamond',serif;font-weight:700;color:#111;}
 .sec-count{font-size:10px;color:var(--text3);margin-top:1px;}
 .sec-arrow{font-size:12px;color:var(--text3);transition:transform .2s;}
 .sec-arrow.open{transform:rotate(180deg);color:var(--gold);}
@@ -312,130 +225,54 @@ CHEF PICKS
   display:flex;
   gap:14px;
   align-items:flex-start;
-
-  transition:
-    transform .25s ease,
-    box-shadow .25s ease;
-
-  box-shadow:
-    0 2px 12px rgba(0,0,0,.04),
-    0 10px 35px rgba(0,0,0,.06);
-
+  transition:transform .25s ease,box-shadow .25s ease;
+  box-shadow:0 2px 12px rgba(0,0,0,.04),0 10px 35px rgba(0,0,0,.06);
   border:none;
 }
-
 .menu-item:hover{
   transform:translateY(-4px);
-
-  box-shadow:
-    0 12px 40px rgba(0,0,0,.10);
+  box-shadow:0 12px 40px rgba(0,0,0,.10);
 }
-
-.item-img img{
-  transition:transform .4s ease;
-}
-
-.menu-item:hover .item-img img{
-  transform:scale(1.08);
-}
-
-.chef-card{
-  transition:transform .25s ease;
-}
-
-.chef-card:hover{
-  transform:translateY(-4px);
-}
-  .item-img img{
-  transition:transform .4s ease;
-}
-
-.menu-item:hover .item-img img{
-  transform:scale(1.08);
-}
-
+.item-img img{transition:transform .4s ease;}
+.menu-item:hover .item-img img{transform:scale(1.08);}
 .item-left{flex:1;min-width:0;}
 .type-ico{margin-bottom:5px;}
 .veg-ico{width:13px;height:13px;border:1.5px solid var(--green);border-radius:2px;display:inline-flex;align-items:center;justify-content:center;}
 .veg-ico::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--green);}
 .nveg-ico{width:13px;height:13px;border:1.5px solid var(--red);border-radius:2px;display:inline-flex;align-items:center;justify-content:center;}
 .nveg-ico::after{content:'';width:4px;height:4px;border-radius:50%;background:var(--red);}
-.item-name{
-  font-size:17px;
-
-  font-weight:700;
-
-  color:#111;
-
-  margin-bottom:8px;
-}
+.item-name{font-size:17px;font-weight:700;color:#111;margin-bottom:8px;}
 .bs-tag{display:inline-flex;align-items:center;gap:2px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);color:var(--gold);font-size:9px;font-weight:700;padding:1px 6px;border-radius:4px;margin-left:5px;vertical-align:middle;letter-spacing:0.3px;}
-.item-desc{
-  font-size:13px;
-
-  color:#666;
-
-  line-height:1.5;
-
-  margin-bottom:12px;
-}
+.item-desc{font-size:13px;color:#666;line-height:1.5;margin-bottom:12px;}
 .price-row{display:flex;align-items:center;gap:9px;}
-.item-price{
-  font-size:20px;
-
-  font-weight:700;
-
-  color:#111;
-}
+.item-price{font-size:20px;font-weight:700;color:#111;}
 .liked-lbl{font-size:10.5px;color:var(--green);font-weight:500;}
 .cust-note{font-size:9.5px;color:var(--gold);font-weight:500;margin-top:5px;letter-spacing:0.3px;}
 .item-right{flex-shrink:0;display:flex;flex-direction:column;align-items:center;gap:7px;}
 .item-img{
   width:120px;
-
   height:120px;
-
   border-radius:18px;
-
   overflow:hidden;
-
   background:#f7f7f7;
-
   flex-shrink:0;
-
   display:flex;
-
   align-items:center;
-
   justify-content:center;
-
   font-size:54px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+.item-img img{width:100%;height:100%;object-fit:cover;display:block;}
 
-  box-shadow:
-  0 6px 18px rgba(0,0,0,.08);
-}
-.item-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
 /* ======= BUTTONS ======= */
 .add-btn{
   background:#111;
-
   color:#fff;
-
   border:none;
-
   border-radius:999px;
-
   padding:10px 24px;
-
   font-size:12px;
-
   font-weight:700;
-
   cursor:pointer;
 }
 .add-btn:hover{background:var(--gold);color:#0A0800;border-color:transparent;}
@@ -444,19 +281,12 @@ CHEF PICKS
 .qty-ctrl span{color:#0A0800;font-size:12px;font-weight:700;min-width:14px;text-align:center;}
 .ar-btn{
   background:#D4AF37;
-
   color:#111;
-
   border:none;
-
   border-radius:999px;
-
   padding:8px 16px;
-
   font-size:11px;
-
   font-weight:700;
-
   cursor:pointer;
 }
 .ar-btn:hover{background:var(--gold);color:#0A0800;}
@@ -480,7 +310,8 @@ CHEF PICKS
 .btm-sheet{position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:480px;background:var(--surface);border-radius:18px 18px 0 0;z-index:201;transition:transform .28s cubic-bezier(.32,.72,0,1);max-height:85vh;overflow-y:auto;border-top:1px solid var(--border);}
 .btm-sheet.show{transform:translateX(-50%) translateY(0);}
 .sheet-handle{width:36px;height:3px;background:rgba(255,255,255,0.12);border-radius:2px;margin:11px auto;}
-.sheet-img{height:155px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:62px;border-bottom:1px solid var(--border);}
+.sheet-img{height:155px;background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:62px;border-bottom:1px solid var(--border);overflow:hidden;}
+.sheet-img img{width:100%;height:100%;object-fit:cover;display:block;}
 .sheet-body{padding:18px 18px 100px;}
 .sheet-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;margin-bottom:3px;}
 .sheet-price{font-size:17px;font-weight:600;margin-bottom:8px;color:var(--gold);}
@@ -628,35 +459,15 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
 </div>
 
 <!-- HERO -->
-  
 <section class="premium-hero">
-
-    <img
-      class="hero-banner"
-      src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1400"
-    >
-
+    <img class="hero-banner" src="https://images.unsplash.com/photo-1544025162-d76694265947?q=80&w=1400">
     <div class="hero-overlay"></div>
-
     <div class="hero-content">
-
-        <span class="hero-badge">
-            PREMIUM DINING
-        </span>
-
-        <h1>
-            Chef Nishanth's
-            Kitchen
-        </h1>
-
-        <p>
-            Crafted with passion and served with perfection.
-        </p>
-
+        <span class="hero-badge">PREMIUM DINING</span>
+        <h1>Chef Nishanth's Kitchen</h1>
+        <p>Crafted with passion and served with perfection.</p>
     </div>
-
 </section>
-
 
 <!-- SEARCH -->
 <div class="search-wrap">
@@ -681,15 +492,8 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
 
 <!-- CHEF PICKS -->
 <div class="chef-picks">
-
-  <div class="chef-title">
-    ⭐ Chef's Recommendations
-  </div>
-
-  <div class="chef-scroll" id="chefPicks">
-
-  </div>
-
+  <div class="chef-title">⭐ Chef's Recommendations</div>
+  <div class="chef-scroll" id="chefPicks"></div>
 </div>
 
 <div id="menuContainer"></div>
@@ -718,7 +522,7 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
 <!-- BOTTOM SHEET -->
 <div class="btm-sheet" id="btmSheet">
   <div class="sheet-handle"></div>
-  <div class="sheet-img" id="sheetImg">🍛</div>
+  <div class="sheet-img" id="sheetImg"></div>
   <div class="sheet-body" id="sheetBody"></div>
   <div class="sheet-foot" id="sheetFoot">
     <div class="sheet-qty-row">
@@ -874,18 +678,22 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
   <div class="sending-txt">Sending order to kitchen…</div>
 </div>
 
+<!-- WAITER FAB -->
+<button class="waiter-fab" onclick="openCallWaiter()">🛎️</button>
+
+<!-- FOOTER -->
+<footer class="premium-footer">
+  <h3>Chef Nishanth's Kitchen</h3>
+  <p>Crafted with passion and served with perfection.</p>
+</footer>
+
 <script>
   window.addEventListener('scroll', () => {
+    const hero = document.querySelector('.premium-hero');
+    if(!hero) return;
+    hero.style.transform = `translateY(${window.scrollY * 0.15}px)`;
+  });
 
-  const hero =
-  document.querySelector('.premium-hero');
-
-  if(!hero) return;
-
-  hero.style.transform =
-  `translateY(${window.scrollY * 0.15}px)`;
-
-});
 /* ===== AURORA BACKGROUND ANIMATION ===== */
 (function(){
   const canvas = document.getElementById('aurora-canvas');
@@ -899,7 +707,6 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
   resize();
   window.addEventListener('resize', resize);
 
-  /* Floating gold particles */
   for(let i = 0; i < 55; i++){
     particles.push({
       x: Math.random() * 1000,
@@ -912,7 +719,6 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
     });
   }
 
-  /* Aurora wave streams */
   for(let i = 0; i < 4; i++){
     streams.push({
       phase: i * Math.PI / 2,
@@ -927,8 +733,6 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
   function draw(){
     ctx.clearRect(0, 0, W, H);
     t += 0.012;
-
-    /* Draw aurora streams */
     streams.forEach(s => {
       const y0 = H * s.yBase;
       const grad = ctx.createLinearGradient(0, y0 - s.width, 0, y0 + s.width);
@@ -950,7 +754,6 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
       ctx.fill();
     });
 
-    /* Draw particles */
     particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
@@ -968,7 +771,6 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
       ctx.fill();
     });
 
-    /* Draw connections between nearby particles */
     for(let i = 0; i < particles.length; i++){
       for(let j = i + 1; j < particles.length; j++){
         const dx = particles[i].x - particles[j].x;
@@ -985,7 +787,6 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
         }
       }
     }
-
     requestAnimationFrame(draw);
   }
   draw();
@@ -1006,6 +807,18 @@ const SVG_CUBE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" str
 const SECTION_LABELS = {starters:'Starters',mains:'Main Course',biryani:'Biryani',breads:'Breads & Rotis',desserts:'Desserts',drinks:'Beverages'};
 
 function ek(n){ return n.replace(/[^a-zA-Z0-9]/g,'_'); }
+
+/* ===================================================
+   KEY CHANGE: getItemImage()
+   Tries local 3d-model PNG first (if folder+file exist),
+   falls back to the sheet image URL, then empty string.
+=================================================== */
+function getItemImage(item){
+  if(item && item.folder && item.file){
+    return `${ASSETS_BASE}/${item.folder}/${item.file}.png`;
+  }
+  return (item && item.image) ? item.image : '';
+}
 
 async function loadMenu(){
   const c = document.getElementById('menuContainer');
@@ -1032,45 +845,23 @@ async function loadMenu(){
     </div>`;
   }
 }
+
 function renderChefPicks(){
-
-  const wrap =
-  document.getElementById('chefPicks');
-
+  const wrap = document.getElementById('chefPicks');
   if(!wrap) return;
-
-  const picks =
-  menuData
-  .filter(i => i.bestseller)
-  .slice(0,5);
-
-  wrap.innerHTML =
-  picks.map(item => `
-
-    <div class="chef-card"
-     onclick="openSheet('${ek(item.name)}')">
-
-      <img
-        src="${item.image}"
-        alt="${item.name}">
-
+  const picks = menuData.filter(i => i.bestseller).slice(0,5);
+  wrap.innerHTML = picks.map(item => `
+    <div class="chef-card" onclick="openSheet('${ek(item.name)}')">
+      <img src="${getItemImage(item)}" alt="${item.name}" loading="lazy"
+           onerror="this.style.display='none'">
       <div class="chef-info">
-
-        <div class="chef-name">
-          ${item.name}
-        </div>
-
-        <div class="chef-price">
-          ₹${item.price}
-        </div>
-
+        <div class="chef-name">${item.name}</div>
+        <div class="chef-price">₹${item.price}</div>
       </div>
-
     </div>
-
   `).join('');
-
 }
+
 function getFiltered(){
   return menuData.filter(i => {
     const cm = curCat === 'all' || i.cat === curCat;
@@ -1083,7 +874,10 @@ function getFiltered(){
 function renderMenu(){
   const filtered = getFiltered();
   const c = document.getElementById('menuContainer');
-  if(!filtered.length){ c.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text3);font-size:12px;">No matching dishes found 🔍</div>'; return; }
+  if(!filtered.length){
+    c.innerHTML = '<div style="text-align:center;padding:60px 20px;color:var(--text3);font-size:12px;">No matching dishes found 🔍</div>';
+    return;
+  }
   const cats = ['starters','mains','biryani','breads','desserts','drinks'];
   const groups = {};
   filtered.forEach(i => { if(!groups[i.cat]) groups[i.cat] = []; groups[i.cat].push(i); });
@@ -1115,14 +909,9 @@ function renderMenu(){
         </div>
         <div class="item-right">
           <div class="item-img">
-  <img
-    src="${item.image}"
-    alt="${item.name}"
-    loading="lazy">
-</div>
- 
-</div>
-
+            <img src="${getItemImage(item)}" alt="${item.name}" loading="lazy"
+                 onerror="this.style.display='none'">
+          </div>
           <div style="display:flex;flex-direction:column;gap:5px;align-items:center;margin-top:6px;">
             ${addArea}
             <button class="ar-btn" onclick="event.stopPropagation();openArModal('${k}')">${SVG_CUBE} AR</button>
@@ -1148,11 +937,13 @@ function openSheet(k){
   if(!item) return;
   sItem = item; sQty = 1; sRadio = {}; sAddon = {};
   (item.groups||[]).forEach((g,gi) => { if(g.type==='radio') sRadio[gi] = 0; });
-  document.getElementById('sheetImg').innerHTML =
-`<img
-  src="${item.image}"
-  alt="${item.name}"
-  style="width:100%;height:100%;object-fit:cover;">`;
+
+  /* ---- IMAGE: use local PNG if available ---- */
+  const imgSrc = getItemImage(item);
+  document.getElementById('sheetImg').innerHTML = imgSrc
+    ? `<img src="${imgSrc}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='${item.emoji||'🍽️'}';">`
+    : item.emoji || '🍽️';
+
   let h = `<div class="type-ico" style="margin-bottom:5px;">${item.type==='veg'?'<div class="veg-ico"></div>':'<div class="nveg-ico"></div>'}</div>`;
   h += `<div class="sheet-title">${item.name}${item.bestseller?'<span class="bs-tag">⭐ Bestseller</span>':''}</div>`;
   h += `<div class="sheet-price">₹${item.price}</div>`;
@@ -1179,6 +970,7 @@ function openSheet(k){
   document.getElementById('btmSheet').classList.add('show');
   document.body.style.overflow = 'hidden';
 }
+
 function closeSheet(){
   document.getElementById('overlay').classList.remove('show');
   document.getElementById('btmSheet').classList.remove('show');
@@ -1278,7 +1070,7 @@ function openUpsell(names){
   items.forEach(item => {
     const k = ek(item.name);
     h += `<div class="upsell-card" onclick="addUpsellItem('${k}')">
-      <div style="font-size:22px;">${item.emoji}</div>
+      <div style="font-size:22px;">${item.emoji||'🍽️'}</div>
       <div style="flex:1;"><div style="font-size:12.5px;font-weight:600;">${item.name}</div><div style="font-size:11px;color:var(--text3);">₹${item.price}</div></div>
       <div style="font-size:11px;color:var(--gold);font-weight:600;">+ ADD</div>
     </div>`;
@@ -1306,7 +1098,7 @@ function openAIRecommend(){
   let total = 0, h = '';
   items.forEach(item => {
     total += item.price;
-    h += `<div class="ai-item"><div class="ai-item-emoji">${item.emoji}</div><div style="flex:1;"><div class="ai-item-nm">${item.name}</div><div class="ai-item-why">${item.reason}</div></div><div class="ai-item-price">₹${item.price}</div></div>`;
+    h += `<div class="ai-item"><div class="ai-item-emoji">${item.emoji||'🍽️'}</div><div style="flex:1;"><div class="ai-item-nm">${item.name}</div><div class="ai-item-why">${item.reason}</div></div><div class="ai-item-price">₹${item.price}</div></div>`;
   });
   document.getElementById('aiItemList').innerHTML = h;
   document.getElementById('aiTotal').textContent = total;
@@ -1356,7 +1148,7 @@ async function confirmOrder(){
 /* ===== FILTERS ===== */
 function filterCat(c,el){ curCat=c; document.querySelectorAll('.cat-chip').forEach(e=>e.classList.remove('active')); el.classList.add('active'); renderMenu(); }
 function filterMenu(){ search=document.getElementById('searchInput').value.toLowerCase().trim(); renderMenu(); }
-function toggleVeg(){ vegOnly=!vegOnly; document.getElementById('vegTog').className='tog'+(vegOnly?' on':''); renderMenu(); }
+function toggleVeg(){ vegOnly=!vegOnly; renderMenu(); }
 function focusSearch(){ document.getElementById('searchInput').focus(); }
 
 /* ===== TOAST ===== */
@@ -1435,26 +1227,5 @@ document.onkeydown = e => {
   if(e.ctrlKey && e.keyCode===85) return false;
 };
 </script>
-  <button class="waiter-fab" onclick="openCallWaiter()">
-  🛎️
-</button>
-  <footer class="brand-footer">
-
-  <div class="brand-logo">
-    Chef Nishanth's Kitchen
-  </div>
-
-  <div class="brand-tag">
-    Crafted with passion • Served with perfection
-  </div>
-
-</footer>
-  <button class="waiter-fab" onclick="openCallWaiter()">
-  🛎️
-</button>
-  <footer class="premium-footer">
-  <h3>Chef Nishanth's Kitchen</h3>
-  <p>Crafted with passion and served with perfection.</p>
-</footer>
 </body>
 </html>

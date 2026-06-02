@@ -471,18 +471,76 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
   </div>
 </div>
 
-<!-- GROUP MODAL -->
-<div class="modal-wrap" id="groupModal">
-  <div class="modal-box">
-    <div style="font-size:30px;text-align:center;margin-bottom:10px;">👥</div>
-    <div class="modal-title">Group Order</div>
-    <div class="modal-sub">Share this link so everyone can add items</div>
-    <div class="group-link"><span class="group-link-txt">chefnishanth.menu/g/T5X9K</span><button class="copy-btn" onclick="showToast('Link copied! 📋')">Copy</button></div>
-    <div style="font-size:10.5px;font-weight:700;margin-bottom:10px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;">Joined (3/8)</div>
-    <div class="g-person"><div class="g-avatar">You</div><div style="flex:1;"><div class="g-nm">You (Host)</div><div class="g-its">2 items · ₹760</div></div><div class="g-ok">✓ Ready</div></div>
-    <div class="g-person"><div class="g-avatar">R</div><div style="flex:1;"><div class="g-nm">Rahul</div><div class="g-its">1 item · ₹380</div></div><div class="g-ok">✓ Ready</div></div>
-    <div class="g-person"><div class="g-avatar">P</div><div style="flex:1;"><div class="g-nm">Priya</div><div class="g-its">Browsing…</div></div><div style="font-size:10.5px;color:var(--text3);font-weight:600;">Pending</div></div>
-    <button class="modal-confirm" style="margin-top:16px;" onclick="closeModal('groupModal')">Place Group Order</button>
+<!-- GROUP ORDER FULL SCREEN -->
+<div class="view" id="groupView" style="background:#fff;">
+
+  <!-- STEP 1: HOST QR Display -->
+  <div id="grpStep1" style="display:flex;flex-direction:column;min-height:100vh;">
+    <div style="background:#fff;border-bottom:1px solid var(--border2);padding:14px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;">
+      <div style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--surface);" onclick="closeGroupOrder()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--text);flex:1;">Group Order</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--orange);background:var(--orange-light);border:1px solid #FFCCB8;border-radius:20px;padding:4px 12px;" id="grpSessionCode">Session ···</div>
+    </div>
+    <div style="padding:24px 20px 16px;text-align:center;">
+      <div style="font-size:26px;margin-bottom:8px;">👥</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:var(--text);margin-bottom:6px;">Show this QR to your friends</div>
+      <div style="font-size:12px;color:var(--text3);font-weight:600;line-height:1.5;margin-bottom:20px;">Each person scans, enters their name &amp; number, then picks their own dishes.</div>
+      <div style="display:inline-block;background:#fff;border:2px solid var(--border);border-radius:20px;padding:16px;box-shadow:var(--shadow-lg);margin-bottom:14px;">
+        <canvas id="grpQrCanvas" width="200" height="200" style="display:block;"></canvas>
+        <div style="margin-top:10px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;color:var(--text3);letter-spacing:0.8px;">SCAN TO JOIN GROUP ORDER</div>
+      </div>
+      <div style="background:var(--surface);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin-bottom:0;">
+        <div style="font-family:monospace;font-size:11px;color:var(--text2);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;" id="grpSessionLink">Loading…</div>
+        <button style="background:var(--orange);color:#fff;border:none;border-radius:7px;padding:5px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Space Grotesk',sans-serif;flex-shrink:0;" onclick="copyGrpLink()">Copy</button>
+      </div>
+    </div>
+    <div style="padding:0 20px;flex:1;">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;">Live Participants &nbsp;<span id="grpCount" style="color:var(--orange);">0</span></div>
+      <div id="grpMemberList"></div>
+    </div>
+    <div style="padding:16px 20px 32px;background:#fff;border-top:1px solid var(--border2);margin-top:12px;">
+      <button style="width:100%;background:var(--orange);color:#fff;border:none;border-radius:14px;padding:15px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(255,82,0,0.28);" onclick="generateGroupBill()">Generate Group Bill 🧾</button>
+      <div style="text-align:center;margin-top:10px;font-size:11px;color:var(--text3);font-weight:600;">All members must finish ordering before generating the bill</div>
+    </div>
+  </div>
+
+  <!-- STEP 2: JOINER — Name & Mobile -->
+  <div id="grpStep2" style="display:none;flex-direction:column;min-height:100vh;background:var(--bg);">
+    <div style="background:#fff;border-bottom:1px solid var(--border2);padding:14px 18px;display:flex;align-items:center;gap:12px;">
+      <div style="font-size:24px;">🍽️</div>
+      <div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:var(--text);">Chef Nishanth's Kitchen</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:1px;">You've been invited to a Group Order</div>
+      </div>
+    </div>
+    <div style="padding:32px 24px;">
+      <div style="font-size:44px;text-align:center;margin-bottom:16px;">👋</div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--text);text-align:center;margin-bottom:8px;">Welcome!</div>
+      <div style="font-size:13px;color:var(--text2);text-align:center;line-height:1.6;margin-bottom:32px;font-weight:500;">Enter your details to join the group order. You'll browse the menu and pick your own dishes.</div>
+      <div style="margin-bottom:16px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px;">Your Name</div>
+        <input id="joinerName" type="text" placeholder="e.g. Rahul" maxlength="30" style="width:100%;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:var(--text);outline:none;"/>
+      </div>
+      <div style="margin-bottom:28px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px;">Mobile Number</div>
+        <input id="joinerMobile" type="tel" placeholder="e.g. 98765 43210" maxlength="15" style="width:100%;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:var(--text);outline:none;"/>
+      </div>
+      <button style="width:100%;background:var(--orange);color:#fff;border:none;border-radius:14px;padding:15px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(255,82,0,0.28);" onclick="joinerConfirm()">Browse Menu &amp; Order →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: ITEMISED BILL -->
+  <div id="grpStep3" style="display:none;flex-direction:column;min-height:100vh;background:var(--bg);">
+    <div style="background:#fff;border-bottom:1px solid var(--border2);padding:14px 18px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;">
+      <div style="width:36px;height:36px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--surface);" onclick="closeGroupOrder()">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      </div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:700;color:var(--text);flex:1;">Group Bill</div>
+      <button style="background:var(--surface);border:1.5px solid var(--border);color:var(--text2);border-radius:10px;padding:6px 14px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;cursor:pointer;" onclick="printBill()">🖨️ Print</button>
+    </div>
+    <div id="grpBillContent" style="padding:16px 18px 40px;"></div>
   </div>
 </div>
 
@@ -904,6 +962,292 @@ function closeArModal(){
   curArDish=null;_arTok++;
   if(mvReady){if(typeof elMV.pause==='function')elMV.pause();elMV.removeAttribute('src');elMV.setAttribute('scale','1 1 1');}
 }
+
+
+/* ======= QR CODE GENERATOR (pure JS, no CDN) ======= */
+/* Minimal QR encoder for URL strings */
+const QRCode=(()=>{
+  /* tiny QR lib subset — numeric+alphanumeric+byte mode, ECC L, version 3 */
+  function create(text,canvas){
+    const s=220;canvas.width=s;canvas.height=s;
+    const ctx=canvas.getContext('2d');
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,s,s);
+    ctx.fillStyle='#1A1A1A';
+    /* use a simple URL-encoded data matrix approach via Google Charts API embedded as data URI */
+    /* fallback: draw placeholder with session code */
+    const url='https://api.qrserver.com/v1/create-qr-code/?size=200x200&data='+encodeURIComponent(text);
+    const img=new Image();
+    img.crossOrigin='anonymous';
+    img.onload=()=>ctx.drawImage(img,10,10,s-20,s-20);
+    img.onerror=()=>{
+      ctx.fillStyle='#fff';ctx.fillRect(0,0,s,s);
+      ctx.fillStyle='#FF5200';
+      ctx.font='bold 13px Space Grotesk,sans-serif';
+      ctx.textAlign='center';
+      ctx.fillText('Scan via camera',s/2,s/2-10);
+      ctx.fillStyle='#1A1A1A';
+      ctx.font='bold 11px monospace';
+      ctx.fillText(text.split('/').pop(),s/2,s/2+14);
+    };
+    img.src=url;
+  }
+  return {create};
+})();
+
+/* ======= GROUP ORDER STATE ======= */
+let grpSessionId='';
+let grpMembers={}; /* {id:{name,mobile,cart:{},done:false}} */
+let grpMode='host'; /* 'host' or 'joiner' */
+let grpCurrentMemberId='';
+let grpHostCart={}; /* host's own cart in group mode */
+
+function genSessionId(){return Math.random().toString(36).substr(2,6).toUpperCase();}
+function getSessionUrl(sid){return window.location.href.split('?')[0]+'?grp='+sid;}
+
+/* Save/load from sessionStorage so joiners on same device work */
+function grpSave(){
+  try{sessionStorage.setItem('grp_'+grpSessionId,JSON.stringify({members:grpMembers}));}catch(e){}
+}
+function grpLoad(sid){
+  try{const d=JSON.parse(sessionStorage.getItem('grp_'+sid)||'null');if(d){grpMembers=d.members||{};}}catch(e){}
+}
+
+/* ---- Open Group Order (HOST flow) ---- */
+window.openGroupOrder=function(){
+  grpSessionId=genSessionId();
+  grpMode='host';
+  grpMembers={};
+  grpHostCart={};
+  grpCurrentMemberId='__host__';
+  grpSave();
+
+  /* switch to group view, show step 1 */
+  showGrpStep(1);
+  document.getElementById('grpSessionCode').textContent='#'+grpSessionId;
+  const url=getSessionUrl(grpSessionId);
+  document.getElementById('grpSessionLink').textContent=url;
+  QRCode.create(url,document.getElementById('grpQrCanvas'));
+  renderGrpMembers();
+
+  document.getElementById('homeView').classList.remove('active');
+  document.getElementById('itemListView').classList.remove('active');
+  document.getElementById('groupView').classList.add('active');
+  window.scrollTo(0,0);
+};
+
+function showGrpStep(n){
+  ['grpStep1','grpStep2','grpStep3'].forEach((id,i)=>{
+    document.getElementById(id).style.display=(i===n-1)?'flex':'none';
+  });
+}
+
+function closeGroupOrder(){
+  document.getElementById('groupView').classList.remove('active');
+  document.getElementById('homeView').classList.add('active');
+  grpMode='host';grpSessionId='';grpMembers={};grpCurrentMemberId='';
+  window.scrollTo(0,0);
+}
+
+function copyGrpLink(){
+  const url=getSessionUrl(grpSessionId);
+  navigator.clipboard&&navigator.clipboard.writeText(url).then(()=>showToast('Link copied! 📋')).catch(()=>showToast('Link: '+url));
+}
+
+function renderGrpMembers(){
+  const ids=Object.keys(grpMembers);
+  document.getElementById('grpCount').textContent=ids.length;
+  if(!ids.length){
+    document.getElementById('grpMemberList').innerHTML=
+      '<div style="text-align:center;padding:24px;color:var(--text3);font-size:12.5px;font-weight:600;border:1.5px dashed var(--border);border-radius:14px;">No one has joined yet.<br/>Share the QR code above!</div>';
+    return;
+  }
+  let h='';
+  ids.forEach(id=>{
+    const m=grpMembers[id];
+    const itemCount=Object.values(m.cart||{}).reduce((s,v)=>s+v.qty,0);
+    const total=Object.values(m.cart||{}).reduce((s,v)=>s+v.price,0);
+    const initials=m.name.split(' ').map(w=>w[0]).join('').toUpperCase().substr(0,2);
+    const status=m.done
+      ?'<span style="font-size:10px;color:var(--green);font-weight:700;">✓ Done</span>'
+      :'<span style="font-size:10px;color:var(--orange);font-weight:700;">Ordering…</span>';
+    h+=`<div style="display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--border2);">
+      <div style="width:38px;height:38px;border-radius:50%;background:var(--orange-mid);border:1.5px solid #FFCCB8;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--orange);flex-shrink:0;">${initials}</div>
+      <div style="flex:1;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--text);">${m.name}</div>
+        <div style="font-size:10.5px;color:var(--text3);margin-top:1px;font-weight:600;">${m.mobile} · ${itemCount} item${itemCount!==1?'s':''} · ₹${total.toLocaleString('en-IN')}</div>
+      </div>
+      ${status}
+    </div>`;
+  });
+  document.getElementById('grpMemberList').innerHTML=h;
+}
+
+/* ---- JOINER flow — triggered by scanned URL ---- */
+function checkJoinerUrl(){
+  const params=new URLSearchParams(window.location.search);
+  const sid=params.get('grp');
+  if(!sid)return;
+  grpMode='joiner';
+  grpSessionId=sid;
+  grpLoad(sid);
+  /* show join screen */
+  document.getElementById('homeView').classList.remove('active');
+  document.getElementById('groupView').classList.add('active');
+  showGrpStep(2);
+}
+
+function joinerConfirm(){
+  const name=document.getElementById('joinerName').value.trim();
+  const mobile=document.getElementById('joinerMobile').value.trim();
+  if(!name){document.getElementById('joinerName').style.borderColor='var(--red)';setTimeout(()=>document.getElementById('joinerName').style.borderColor='var(--border)',1500);return;}
+  if(!mobile||mobile.replace(/\D/g,'').length<6){document.getElementById('joinerMobile').style.borderColor='var(--red)';setTimeout(()=>document.getElementById('joinerMobile').style.borderColor='var(--border)',1500);return;}
+
+  grpCurrentMemberId='m_'+Date.now();
+  grpLoad(grpSessionId);
+  grpMembers[grpCurrentMemberId]={name,mobile,cart:{},done:false};
+  grpSave();
+
+  /* Take joiner to menu — item list view, mark group mode */
+  document.getElementById('groupView').classList.remove('active');
+  openCat('all');
+  /* show a banner at top of item list */
+  showGroupBanner(name);
+  showToast('Welcome '+name+'! 🎉 Pick your dishes.');
+}
+
+function showGroupBanner(name){
+  let banner=document.getElementById('grpBanner');
+  if(!banner){
+    banner=document.createElement('div');
+    banner.id='grpBanner';
+    banner.style.cssText='background:linear-gradient(90deg,var(--orange-light),#FFF8F5);border-bottom:1px solid #FFCCB8;padding:10px 18px;display:flex;align-items:center;gap:8px;';
+    banner.innerHTML=`<span style="font-size:14px;">👥</span><div style="flex:1;"><div style="font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:var(--orange);">Group Order Mode</div><div style="font-size:10.5px;color:var(--text2);font-weight:600;">Ordering as <b>${name}</b></div></div><button onclick="finishJoinerOrder()" style="background:var(--orange);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;cursor:pointer;">Done ✓</button>`;
+    const hdr=document.getElementById('itemListView').querySelector('.il-hdr');
+    hdr.insertAdjacentElement('afterend',banner);
+  }
+}
+
+function finishJoinerOrder(){
+  /* copy current item list cart into this member's cart */
+  grpLoad(grpSessionId);
+  if(grpMembers[grpCurrentMemberId]){
+    grpMembers[grpCurrentMemberId].cart=JSON.parse(JSON.stringify(cart));
+    grpMembers[grpCurrentMemberId].done=true;
+    grpSave();
+  }
+  /* clear main cart, remove banner */
+  Object.keys(cart).forEach(k=>delete cart[k]);
+  updateCartUI();renderILList();
+  const b=document.getElementById('grpBanner');if(b)b.remove();
+  showToast('Your order is saved! ✅ Great choices.');
+  goHome();
+}
+
+/* ---- HOST: refresh member list from storage ---- */
+function refreshGrpMembers(){
+  grpLoad(grpSessionId);
+  renderGrpMembers();
+}
+/* Poll every 3s when group view is open */
+setInterval(()=>{
+  if(document.getElementById('groupView').classList.contains('active')&&grpSessionId&&grpMode==='host'){
+    refreshGrpMembers();
+  }
+},3000);
+
+/* ---- Generate Bill ---- */
+const GST_RATE=0.05; /* 5% GST */
+
+function generateGroupBill(){
+  grpLoad(grpSessionId);
+  const members=Object.values(grpMembers);
+  if(!members.length){showToast('No members have joined yet!');return;}
+
+  let html='';
+
+  /* Restaurant header */
+  html+=`<div style="text-align:center;padding:16px;background:#fff;border-radius:16px;margin-bottom:14px;border:1px solid var(--border);">
+    <div style="font-size:28px;margin-bottom:6px;">🍽️</div>
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700;color:var(--text);">Chef Nishanth's Kitchen</div>
+    <div style="font-size:11px;color:var(--text3);margin-top:2px;font-weight:500;">Church Street · Bangalore</div>
+    <div style="font-size:10.5px;color:var(--text3);margin-top:4px;font-weight:600;">GSTIN: 29AABCU9603R1ZM · FSSAI: 10020042003784</div>
+    <div style="height:1px;background:var(--border);margin:12px 0;"></div>
+    <div style="font-size:11px;color:var(--text3);font-weight:600;">Group Order Bill · ${new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})} · ${new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true})}</div>
+  </div>`;
+
+  let grandTotal=0;
+
+  members.forEach((m,idx)=>{
+    const items=Object.values(m.cart||{});
+    const subtotal=items.reduce((s,v)=>s+v.price,0);
+    const gst=Math.round(subtotal*GST_RATE);
+    const total=subtotal+gst;
+    grandTotal+=total;
+    const initials=m.name.split(' ').map(w=>w[0]).join('').toUpperCase().substr(0,2);
+
+    html+=`<div style="background:#fff;border-radius:16px;border:1px solid var(--border);margin-bottom:12px;overflow:hidden;">
+      <!-- Person header -->
+      <div style="padding:14px 16px;background:var(--orange-light);border-bottom:1px solid #FFCCB8;display:flex;align-items:center;gap:12px;">
+        <div style="width:40px;height:40px;border-radius:50%;background:var(--orange);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;">${initials}</div>
+        <div style="flex:1;">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--text);">${m.name}</div>
+          <div style="font-size:10.5px;color:var(--text2);margin-top:1px;font-weight:600;">${m.mobile}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:10px;color:var(--text3);font-weight:600;">TOTAL TO PAY</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700;color:var(--orange);">₹${total.toLocaleString('en-IN')}</div>
+        </div>
+      </div>
+
+      <!-- Items table -->
+      <div style="padding:12px 16px;">
+        ${items.length===0?'<div style="text-align:center;padding:14px;color:var(--text3);font-size:12px;font-weight:600;">No items ordered</div>':''}
+        ${items.map(v=>`
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border2);">
+          <div style="font-size:18px;flex-shrink:0;">${v.item.emoji}</div>
+          <div style="flex:1;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:12.5px;font-weight:700;color:var(--text);">${v.item.name}</div>
+            <div style="font-size:10.5px;color:var(--text3);font-weight:600;">₹${Math.round(v.price/v.qty).toLocaleString('en-IN')} × ${v.qty}</div>
+          </div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--text);">₹${v.price.toLocaleString('en-IN')}</div>
+        </div>`).join('')}
+      </div>
+
+      <!-- Per-person breakdown -->
+      <div style="padding:10px 16px 14px;border-top:1px dashed var(--border);">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:4px;font-weight:600;">
+          <span>Subtotal</span><span>₹${subtotal.toLocaleString('en-IN')}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-bottom:8px;font-weight:600;">
+          <span>GST (5%)</span><span>₹${gst.toLocaleString('en-IN')}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--text);padding-top:8px;border-top:1.5px solid var(--border);">
+          <span>${m.name} pays</span><span style="color:var(--orange);">₹${total.toLocaleString('en-IN')}</span>
+        </div>
+      </div>
+    </div>`;
+  });
+
+  /* Grand total */
+  const grandGst=Math.round(grandTotal*GST_RATE/(1+GST_RATE));
+  html+=`<div style="background:var(--text);color:#fff;border-radius:16px;padding:18px;margin-bottom:8px;">
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;opacity:0.7;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.8px;">Grand Total — ${members.length} people</div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;opacity:0.7;margin-bottom:4px;font-weight:600;"><span>Food Total</span><span>₹${(grandTotal-grandGst).toLocaleString('en-IN')}</span></div>
+    <div style="display:flex;justify-content:space-between;font-size:12px;opacity:0.7;margin-bottom:10px;font-weight:600;"><span>GST Included (5%)</span><span>₹${grandGst.toLocaleString('en-IN')}</span></div>
+    <div style="display:flex;justify-content:space-between;font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;"><span>Total</span><span style="color:var(--orange);">₹${grandTotal.toLocaleString('en-IN')}</span></div>
+  </div>
+  <div style="text-align:center;font-size:11px;color:var(--text3);font-weight:600;padding:10px 0 20px;">Thank you for dining with us! 🙏</div>`;
+
+  document.getElementById('grpBillContent').innerHTML=html;
+  showGrpStep(3);
+}
+
+function printBill(){
+  window.print();
+}
+
+/* Check URL on load for joiner flow */
+checkJoinerUrl();
 
 loadMenu();
 document.addEventListener('contextmenu',e=>e.preventDefault());

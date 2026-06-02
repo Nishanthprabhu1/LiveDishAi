@@ -620,7 +620,7 @@ model-viewer{display:block;width:100%;height:310px;background:transparent;}
 
 <script>
 const SHEET_API='https://script.google.com/macros/s/AKfycbwxYg6FWWLmwIh03jYatUUjGoCHuUJ3ztjhWOKdExuxzHxL_l3s2F6HJ5RdakEa2wIO/exec';
-const WEBHOOK_URL='https://script.google.com/macros/s/AKfycbzZ2zD5LzfrdLyQGGHgevXCCKlWqmr8Hcyx4L8s-WuDzzZYnuYEHWNUasco5lrIqMQV/exec';
+const GROUP_API='https://script.google.com/macros/s/AKfycbzLcft7SFTVh9j8GOFXbUVoytnlsprnBAyx2Ny61X9S-gmgFTvYjExe7j7ETb0aXe8d/exec';
 const ASSETS_BASE='3d-model';
 const SVG_CUBE=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`;
 const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
@@ -640,17 +640,45 @@ const CAT_ORDER=['starters','mains','biryani','breads','desserts','drinks'];
 
 function ek(n){return n.replace(/[^a-zA-Z0-9]/g,'_');}
 
-async function loadMenu(){
-  try{
-    const res=await fetch(SHEET_API);
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const data=await res.json();
-    if(!Array.isArray(data)||!data.length)throw new Error('Empty');
-    menuData=data;
-    buildCatGrid();
-  }catch(e){
-    document.getElementById('catGrid').innerHTML=`<div style="grid-column:span 2;text-align:center;padding:40px 0;color:var(--text3);font-size:13px;">Could not load menu. <span style="color:var(--orange);cursor:pointer;font-weight:700;" onclick="loadMenu()">Retry</span></div>`;
+async function joinerConfirm(){
+
+  const name=document.getElementById('joinerName').value.trim();
+  const mobile=document.getElementById('joinerMobile').value.trim();
+
+  if(!name){
+    showToast('Enter your name');
+    return;
   }
+
+  grpCurrentMemberId='M'+Date.now();
+
+  try{
+
+    await fetch(GROUP_API,{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        action:'join',
+        sessionId:grpSessionId,
+        memberId:grpCurrentMemberId,
+        name:name,
+        mobile:mobile
+      })
+    });
+
+  }catch(err){
+    console.error(err);
+  }
+
+  document.getElementById('groupView').classList.remove('active');
+
+  openCat('all');
+
+  showGroupBanner(name);
+
+  showToast('Welcome '+name+' 🎉');
 }
 
 function buildCatGrid(){
@@ -1044,11 +1072,41 @@ function grpLoad(sid){
 }
 
 /* Host auto refresh */
-function refreshGrpMembers(){
+async function refreshGrpMembers(){
+
   if(!grpSessionId) return;
 
-  grpLoad(grpSessionId);
-  renderGrpMembers();
+  try{
+
+    const res = await fetch(
+      GROUP_API +
+      '?action=members&sessionId=' +
+      encodeURIComponent(grpSessionId)
+    );
+
+    const data = await res.json();
+
+    if(data.success){
+
+      grpMembers={};
+
+      data.members.forEach(m=>{
+
+        grpMembers[m.memberId]={
+          name:m.name,
+          mobile:m.mobile,
+          cart:{},
+          done:m.done
+        };
+
+      });
+
+      renderGrpMembers();
+    }
+
+  }catch(err){
+    console.error(err);
+  }
 }
 
 /* Instant sync between tabs */
@@ -1062,15 +1120,17 @@ window.addEventListener('storage',(e)=>{
 });
 
 /* Poll every second */
-setInterval(()=>{
+setInterval(async ()=>{
+
   if(
-    grpMode === 'host' &&
+    grpMode==='host' &&
     grpSessionId &&
     document.getElementById('groupView').classList.contains('active')
   ){
-    refreshGrpMembers();
+    await refreshGrpMembers();
   }
-},1000);
+
+},2000);;
 
 /* ---- Open Group Order (HOST flow) ---- */
 window.openGroupOrder=function(){

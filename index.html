@@ -236,6 +236,31 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 @keyframes spin{to{transform:rotate(360deg);}}
 .sending-txt{font-family:'Space Grotesk',sans-serif;font-size:13.5px;font-weight:700;color:var(--text);}
 ::-webkit-scrollbar{display:none;}
+/* AR button */
+.ar-btn{border:1.5px solid rgba(2,178,144,0.5);background:rgba(2,178,144,0.1);color:#02B290;border-radius:6px;padding:5px 10px;font-family:'Space Grotesk',sans-serif;font-size:9.5px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:4px;transition:all .15s;white-space:nowrap;}
+.ar-btn:hover{background:var(--teal);color:#fff;}
+.ar-btn svg{width:10px;height:10px;}
+/* AR Modal */
+.ar-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:9000;align-items:flex-end;justify-content:center;backdrop-filter:blur(8px);}
+.ar-modal.open{display:flex;}
+.ar-card{background:#fff;border-top:2px solid var(--orange);color:var(--text);width:100%;max-width:480px;max-height:90vh;overflow-y:auto;position:relative;border-radius:20px 20px 0 0;}
+.ar-viewer{width:100%;height:310px;background:var(--surface);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+#ar-mv-wrapper{position:absolute;inset:0;z-index:2;opacity:0;transition:opacity .3s;}
+#ar-mv-wrapper.mv-vis{opacity:1;}
+model-viewer{display:block;width:100%;height:310px;background:transparent;}
+.mv-ar-badge{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:var(--orange);padding:3px 12px;font-size:8.5px;letter-spacing:1.5px;color:#fff;text-transform:uppercase;border-radius:20px;z-index:4;font-weight:800;pointer-events:none;}
+.scale-info{position:absolute;bottom:50px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.92);padding:3px 12px;font-size:9.5px;color:var(--text2);border-radius:20px;white-space:nowrap;z-index:4;font-weight:600;pointer-events:none;}
+.ar-close{position:absolute;top:12px;right:12px;width:32px;height:32px;background:rgba(255,255,255,0.92);border:1px solid var(--border);color:var(--text);font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;border-radius:50%;font-weight:700;}
+.mv-loader{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:var(--surface);}
+.mv-loader.hidden{opacity:0;pointer-events:none;transition:opacity .3s;}
+.mv-ring{width:34px;height:34px;border-radius:50%;border:2.5px solid var(--border);border-top-color:var(--orange);animation:spin .8s linear infinite;}
+.mv-ldr-txt{font-size:10px;letter-spacing:1px;color:var(--text3);font-weight:700;}
+.ar-launch-wrap{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:6;display:none;}
+.ar-launch-btn{background:var(--orange);color:#fff;border:none;padding:10px 24px;font-size:12px;font-weight:800;cursor:pointer;border-radius:20px;box-shadow:0 5px 18px rgba(255,82,0,0.3);font-family:'Space Grotesk',sans-serif;}
+.ar-not-sup{display:none;position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:6;background:rgba(255,255,255,0.92);padding:5px 14px;font-size:10px;color:var(--text2);border-radius:20px;font-weight:600;white-space:nowrap;}
+.ar-body{padding:18px 18px 24px;}
+.ar-name{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;margin-bottom:5px;}
+.ar-desc{font-size:12.5px;color:var(--text2);line-height:1.6;font-weight:500;}
 /* search in dark */
 .il-search{margin:10px 18px 0;background:var(--dk2);border:1.5px solid var(--dk-border);border-radius:12px;display:flex;align-items:center;gap:8px;padding:11px 14px;}
 .il-search:focus-within{border-color:var(--orange);}
@@ -491,6 +516,44 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
   </div>
 </div>
 
+<!-- AR MODAL -->
+<div class="ar-modal" id="arModal">
+  <div class="ar-card">
+    <div class="ar-viewer">
+      <div class="ar-close" onclick="closeArModal()">✕</div>
+      <div class="mv-loader" id="mvLoader">
+        <div class="mv-ring"></div>
+        <div class="mv-ldr-txt">LOADING 3D MODEL</div>
+      </div>
+      <div id="ar-mv-wrapper">
+        <model-viewer id="main-mv"
+          ar ar-modes="webxr scene-viewer quick-look"
+          ar-placement="floor" ar-scale="fixed"
+          camera-controls touch-action="pan-y"
+          shadow-intensity="1" shadow-softness="0.8"
+          environment-image="neutral" exposure="1"
+          camera-orbit="0deg 75deg 105%"
+          min-camera-orbit="auto auto 60%"
+          max-camera-orbit="auto auto 140%"
+          interaction-prompt="none" loading="eager" reveal="manual"
+          scale="1 1 1">
+          <button slot="ar-button" id="mv-ar-slot-btn" aria-hidden="true" style="display:none;"></button>
+        </model-viewer>
+      </div>
+      <div class="mv-ar-badge">✦ AR Ready</div>
+      <div class="scale-info">Actual portion size</div>
+      <div class="ar-launch-wrap" id="arLaunchWrap">
+        <button class="ar-launch-btn" id="arLaunchBtn" disabled>⏳ Preparing…</button>
+      </div>
+      <div class="ar-not-sup" id="arNotSup">AR not supported on this device — drag to rotate 3D</div>
+    </div>
+    <div class="ar-body">
+      <div class="ar-name" id="arModalName"></div>
+      <div class="ar-desc" id="arModalDesc"></div>
+    </div>
+  </div>
+</div>
+
 <!-- SENDING -->
 <div class="sending-ovl" id="sendingOvl">
   <div class="spinner"></div>
@@ -500,6 +563,9 @@ body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-
 <script>
 const SHEET_API='https://script.google.com/macros/s/AKfycbwxYg6FWWLmwIh03jYatUUjGoCHuUJ3ztjhWOKdExuxzHxL_l3s2F6HJ5RdakEa2wIO/exec';
 const WEBHOOK_URL='https://script.google.com/macros/s/AKfycbzZ2zD5LzfrdLyQGGHgevXCCKlWqmr8Hcyx4L8s-WuDzzZYnuYEHWNUasco5lrIqMQV/exec';
+const ASSETS_BASE='3d-model';
+const SVG_CUBE=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>`;
+const isIOS=/iPhone|iPad|iPod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
 
 let menuData=[],cart={},curCat='all',ilSearch='',ilVegOnly=false,homeSearchQ='';
 let sItem=null,sQty=1,sRadio={},sAddon={},splitN=2;
@@ -637,6 +703,7 @@ function itemHTML(item){
         </div>
         ${addCtrl}
       </div>
+      <button class="ar-btn" style="margin-top:8px;" onclick="event.stopPropagation();openArModal('${k}')">${SVG_CUBE} View in AR</button>
     </div>
   </div>`;
 }
@@ -764,6 +831,79 @@ async function confirmOrder(){
 }
 let toastT;
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2500);}
+
+/* ---- AR ---- */
+const elMV=document.getElementById('main-mv');
+const elMvWrap=document.getElementById('ar-mv-wrapper');
+const elMvLoader=document.getElementById('mvLoader');
+const elArLaunchWrap=document.getElementById('arLaunchWrap');
+const elArLaunch=document.getElementById('arLaunchBtn');
+const elArNotSup=document.getElementById('arNotSup');
+let mvPromise=null,mvReady=false,curArDish=null,_arTok=0;
+
+function ensureMV(){
+  if(!mvPromise)mvPromise=import('https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js').then(()=>{mvReady=true;});
+  return mvPromise;
+}
+
+function openArModal(k){
+  const d=menuData.find(i=>ek(i.name)===k);if(!d)return;
+  if(!d.folder||!d.file){showToast('🥽 AR model coming soon!');return;}
+  curArDish=d;const token=++_arTok;
+  document.getElementById('arModalName').textContent=d.name;
+  document.getElementById('arModalDesc').textContent=d.desc;
+  elMvWrap.classList.remove('mv-vis');
+  elArLaunchWrap.style.display='none';
+  elArNotSup.style.display='none';
+  elArLaunch.disabled=true;
+  elArLaunch.textContent='⏳ Downloading…';
+  elMvLoader.classList.remove('hidden');
+  document.getElementById('arModal').classList.add('open');
+  document.body.style.overflow='hidden';
+  const glbPath=`${ASSETS_BASE}/${d.folder}/${d.file}.glb`;
+  ensureMV().then(()=>{
+    if(_arTok!==token)return;
+    const s=(d.scale??1).toFixed(6);
+    elMV.setAttribute('scale',`${s} ${s} ${s}`);
+    elMV.setAttribute('camera-orbit',d.orbit??'0deg 75deg 105%');
+    if(isIOS&&d.file)elMV.setAttribute('ios-src',`${ASSETS_BASE}/${d.folder}/${d.file}.usdz`);
+    if(elMV.getAttribute('src')===glbPath)_onGlbDone(d,token);
+    else{
+      elMV.removeAttribute('src');
+      requestAnimationFrame(()=>{requestAnimationFrame(()=>{
+        if(_arTok!==token)return;
+        elMV.setAttribute('src',glbPath);
+      });});
+    }
+  });
+}
+
+function _onGlbDone(d,token){
+  if(_arTok!==token)return;
+  const s=(d.scale??1).toFixed(6);
+  elMV.setAttribute('scale',`${s} ${s} ${s}`);
+  elMV.dismissPoster();
+  elMvLoader.classList.add('hidden');
+  elMvWrap.classList.add('mv-vis');
+  const can=elMV.canActivateAR;
+  elArLaunchWrap.style.display=can?'flex':'none';
+  elArNotSup.style.display=can?'none':'block';
+  elArLaunch.disabled=false;
+  elArLaunch.textContent='✦ View On Table';
+}
+
+elMV.addEventListener('load',()=>{if(curArDish)_onGlbDone(curArDish,_arTok);});
+
+document.getElementById('arLaunchBtn').addEventListener('click',()=>{
+  if(elMV.canActivateAR){try{elMV.activateAR();}catch(e){}}
+});
+
+function closeArModal(){
+  document.getElementById('arModal').classList.remove('open');
+  document.body.style.overflow='';
+  curArDish=null;_arTok++;
+  if(mvReady){if(typeof elMV.pause==='function')elMV.pause();elMV.removeAttribute('src');elMV.setAttribute('scale','1 1 1');}
+}
 
 loadMenu();
 document.addEventListener('contextmenu',e=>e.preventDefault());

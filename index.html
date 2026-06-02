@@ -1005,21 +1005,83 @@ function genSessionId(){return Math.random().toString(36).substr(2,6).toUpperCas
 function getSessionUrl(sid){return window.location.href.split('?')[0]+'?grp='+sid;}
 
 /* Save/load from sessionStorage so joiners on same device work */
+/* ===== GROUP ORDER STORAGE FIX ===== */
+
 function grpSave(){
-  try{sessionStorage.setItem('grp_'+grpSessionId,JSON.stringify({members:grpMembers}));}catch(e){}
+  try{
+    localStorage.setItem(
+      'grp_' + grpSessionId,
+      JSON.stringify({
+        members: grpMembers,
+        updated: Date.now()
+      })
+    );
+  }catch(err){
+    console.error(err);
+  }
 }
+
 function grpLoad(sid){
-  try{const d=JSON.parse(sessionStorage.getItem('grp_'+sid)||'null');if(d){grpMembers=d.members||{};}}catch(e){}
+  try{
+    const raw = localStorage.getItem('grp_' + sid);
+
+    if(!raw){
+      grpMembers = {};
+      return;
+    }
+
+    const data = JSON.parse(raw);
+
+    if(data && data.members){
+      grpMembers = data.members;
+    }else{
+      grpMembers = {};
+    }
+  }catch(err){
+    console.error(err);
+    grpMembers = {};
+  }
 }
+
+/* Host auto refresh */
+function refreshGrpMembers(){
+  if(!grpSessionId) return;
+
+  grpLoad(grpSessionId);
+  renderGrpMembers();
+}
+
+/* Instant sync between tabs */
+window.addEventListener('storage',(e)=>{
+  if(
+    grpMode === 'host' &&
+    e.key === 'grp_' + grpSessionId
+  ){
+    refreshGrpMembers();
+  }
+});
+
+/* Poll every second */
+setInterval(()=>{
+  if(
+    grpMode === 'host' &&
+    grpSessionId &&
+    document.getElementById('groupView').classList.contains('active')
+  ){
+    refreshGrpMembers();
+  }
+},1000);
 
 /* ---- Open Group Order (HOST flow) ---- */
 window.openGroupOrder=function(){
   grpSessionId=genSessionId();
   grpMode='host';
-  grpMembers={};
-  grpHostCart={};
-  grpCurrentMemberId='__host__';
-  grpSave();
+grpMembers = {};
+grpHostCart = {};
+grpCurrentMemberId = '__host__';
+
+localStorage.removeItem('grp_' + grpSessionId);
+grpSave();
 
   /* switch to group view, show step 1 */
   showGrpStep(1);

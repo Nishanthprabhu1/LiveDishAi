@@ -120,7 +120,7 @@ h1,h2,.display{font-family:'Playfair Display',serif;}
 .qty-ctrl{display:flex;align-items:center;background:var(--gold);border-radius:10px;overflow:hidden;height:30px;}
 .qty-ctrl button{background:transparent;border:none;color:#0A0800;font-size:16px;font-weight:700;width:28px;height:100%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .qty-ctrl span{color:#0A0800;font-size:12px;font-weight:700;min-width:16px;text-align:center;}
-.ar-btn{background:var(--card2);color:var(--text2);border:1px solid var(--border);border-radius:10px;padding:7px 14px;font-size:10px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'Outfit',sans-serif;transition:all .18s;}
+.ar-btn{background:var(--card2);color:var(--text2);border:1px solid var(--border);border-radius:10px;padding:10px 18px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'Outfit',sans-serif;transition:all .18s;}
 .ar-btn:hover{border-color:var(--gold);color:var(--gold);}
 
 /* ======= CART FOOTER ======= */
@@ -631,12 +631,13 @@ function renderMenu(){
             <div class="liked-lbl">👍 ${item.liked}%</div>
           </div>
           ${(item.groups||[]).length?'<div class="cust-note">✎ Customisable</div>':''}
+          <button class="ar-btn" style="margin-top:10px;" onclick="event.stopPropagation();openArModal('${k}')">${SVG_CUBE} View in 3D</button>
         </div>
         <div class="item-right">
           <div class="item-img">${img?`<img src="${img}" alt="${item.name}" loading="lazy" onerror="this.style.display='none'">`:(item.emoji||'🍽️')}</div>
-          <div style="display:flex;flex-direction:column;gap:6px;align-items:center;margin-top:6px;">
+          <<div style="display:flex;flex-direction:column;gap:6px;align-items:center;margin-top:6px;">
             ${addArea}
-            <button class="ar-btn" onclick="event.stopPropagation();openArModal('${k}')">${SVG_CUBE} AR</button>
+          </div>
           </div>
         </div>
       </div>`;
